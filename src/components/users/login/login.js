@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import { FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 import Links from '../../common/link';
 import {connect} from 'react-redux';
@@ -8,7 +8,7 @@ import './login.css';
 
 class Login extends React.Component {
 
-    constructor(props) {
+    constructor(props, context) {
         super(props);
         this.state = {
             user: {'password': '', 'username': ''},
@@ -43,12 +43,14 @@ class Login extends React.Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        this.props.action.createUser(this.state.user)
+        let that = this;
+        this.props.action.logUserIn(this.state.user)
             .then(()=> {
                 console.log('success');
+                that.context.router.history.push('/dashboard')
             }).catch(err=> {
                 console.log(err);
-        })
+        });
     };
 
     render() {
@@ -106,6 +108,11 @@ class Login extends React.Component {
     }
 
 }
+
+
+Login.contextTypes = {
+    router: PropTypes.object
+};
 
 function mapDispatchToProps(dispatch){
     return {

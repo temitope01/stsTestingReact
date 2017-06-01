@@ -5,11 +5,25 @@ export function createUserSuccess(user) {
     return {type: types.CREATE_USER, user};
 }
 
+export function logUserInSuccess(user) {
+    return {type: types.LOG_IN_USER, user};
+}
+
 export function createUser(user) {
     return function (dispatch) {
         return UserApi.createUser(user).then(user => {
             dispatch(createUserSuccess(user));
         }).catch(err => {
+            throw(err);
+        })
+    }
+}
+
+export function logUserIn(user) {
+    return function (dispatch) {
+        return UserApi.logUserIn(user).then(user => {
+            dispatch(logUserInSuccess(user))
+        }).catch(err=> {
             throw(err);
         })
     }
