@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../../common/header';
 import SideNav from '../../common/sideNav';
 import Exams from '../exams';
+import Practice from '../exams/practice';
 import './home.css';
 import { withRouter } from 'react-router';
 import {connect} from 'react-redux';
@@ -38,7 +39,7 @@ class Dashboard extends React.Component {
         }
 
         if(location.pathname.indexOf('Ongoing') != -1) {
-
+            this.setState({component: <Practice/>});
         }
     };
 

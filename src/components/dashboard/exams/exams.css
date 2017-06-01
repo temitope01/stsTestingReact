@@ -1,5 +1,14 @@
 .container-exam {
     margin: 5%;
     background-color: white;
+    min-height: 80vh;
+}
 
+.container-padding {
+    padding: 25px;
+}
+
+.table-container{
+    border-top: 2px solid #eee;
+    margin-top: 10px;
 }
