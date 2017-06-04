@@ -1,19 +1,52 @@
 import React from 'react';
 import './exams.css';
-import { FormControl } from 'react-bootstrap';
+import { FormControl, Modal, ModalBody, Button } from 'react-bootstrap';
+import Table from '../../common/table';
+import _ from 'lodash';
+import Links from '../../common/link';
+let data = {};
 
 class Exams extends  React.Component {
 
     constructor(props) {
         super(props);
+        const head = [{title: 'SN'}, {title: 'Subject'}, {title: 'Date'}, {title: 'Candidates'}];
+        const scheduledExams = this.props.scheduledExams;
+        debugger;
+        data = scheduledExams;
         this.state = {
-            value: ''
+            value: '',
+            head,
+            scheduledExams,
+            show: false,
+            match: this.props.match
         }
     }
 
+    tableClick = (e)=> {
+        this.showModal();
+    };
+
+    showModal =(e)=> {
+        this.setState({show: true})
+    };
+
+    close =(e)=> {
+
+    };
+
+    hideModal =()=> {
+        this.setState({show: false});
+    };
+
     handleChange = (e)=> {
-        debugger;
-    }
+        if(e.target.value.length === 0){
+            this.setState({scheduledExams: data});
+        }else {
+            this.setState({scheduledExams: _.find(data, e.target.value)});
+        }
+        this.setState({value: e.target.value});
+    };
 
     render() {
         return (
@@ -40,10 +73,25 @@ class Exams extends  React.Component {
                         </div>
 
                         <div>
-
+                        <Table click={this.tableClick} head={this.state.head} body={this.state.scheduledExams} />
 
                         </div>
-
+                        <Modal
+                            {...this.props}
+                            show={this.state.show}
+                            onHide={this.hideModal}
+                            dialogClassName="custom-modal"
+                        >
+                            <Modal.Header closeButton>
+                            </Modal.Header>
+                            <ModalBody>
+                                <h4>Wrapped Text</h4>
+                            </ModalBody>
+                            <Modal.Footer>
+                                <Button onClick={this.close}>Cancel</Button>
+                                <Links style="left btn btn-default " name="Proceed" target={`${this.state.match.path}/current#`}/>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
 

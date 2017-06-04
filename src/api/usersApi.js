@@ -2,13 +2,13 @@ import request from 'superagent';
 
 class UsersApi {
 
-    createUser(user) {
+    createUser = (user)=> {
         return new Promise((resolve, reject) => {
             resolve(Object.assign({}, user));
         })
-    }
+    };
 
-    logUserIn(user) {
+    logUserIn = (user) => {
         return new Promise((resolve, reject)=> {
             request
                 .post('http://localhost:8080/StsExam/webresources/candidate/login')

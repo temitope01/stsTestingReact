@@ -1,0 +1,24 @@
+.container-exam-panel {
+    margin: 5%;
+    background-color: white;
+    height: 600px;
+}
+
+.container-padding-panel {
+    padding: 25px;
+}
+
+.table-container-panel{
+    border-top: 2px solid #eee;
+    margin-top: 10px;
+    height: 410px;
+}
+
+.bottom-panel{
+    height: 50px;
+    border-top: 1px solid #eee;
+}
+
+.center {
+    text-align: center;
+}

@@ -10,7 +10,7 @@ export function logUserInSuccess(user) {
 }
 
 export function createUser(user) {
-    return function (dispatch) {
+    return dispatch => {
         return UserApi.createUser(user).then(user => {
             dispatch(createUserSuccess(user));
         }).catch(err => {
@@ -20,7 +20,7 @@ export function createUser(user) {
 }
 
 export function logUserIn(user) {
-    return function (dispatch) {
+    return dispatch => {
         return UserApi.logUserIn(user).then(user => {
             dispatch(logUserInSuccess(user))
         }).catch(err=> {

@@ -3,9 +3,11 @@ import Header from '../../common/header';
 import SideNav from '../../common/sideNav';
 import Exams from '../exams';
 import Practice from '../exams/practice';
+import ExamPanel from '../exams/examPanel';
 import './home.css';
-import { withRouter } from 'react-router';
 import {connect} from 'react-redux';
+import * as examActions from '../../../actions/examActions';
+import {bindActionCreators} from 'redux';
 
 class Dashboard extends React.Component {
 
@@ -17,8 +19,8 @@ class Dashboard extends React.Component {
                 {url: 'Profile', item: [{link: '/Ongoing', name: 'Present'}]}
             ],
             match: props.match,
-            component: ""
-
+            component: "",
+            exams: []
         }
     }
 
@@ -33,14 +35,25 @@ class Dashboard extends React.Component {
     }
 
     handleLocationChange = (location) => {
+        let that = this; // change this
 
-        if(location.pathname.indexOf('Exam') != -1) {
-            this.setState({component: <Exams/>});
+        if(location.pathname.indexOf('Exam') !== -1) {
+            this.props.actions.getExams().then(()=> {
+                that.setState({component: <Exams scheduledExams={that.props.exams} match={that.props.match} />});
+            }).catch(err => {
+
+            });
+
         }
 
-        if(location.pathname.indexOf('Ongoing') != -1) {
+        if(location.pathname.indexOf('Ongoing') !== -1) {
             this.setState({component: <Practice/>});
         }
+
+        if(location.pathname.indexOf('current') !== -1) {
+            this.setState({component: <ExamPanel/>});
+        }
+
     };
 
     render () {
@@ -58,7 +71,19 @@ class Dashboard extends React.Component {
     }
 }
 
-export default withRouter(connect(null, null)(Dashboard));
+function mapDispatchToProps (dispatch)  {
+    return {
+        actions: bindActionCreators(examActions, dispatch)
+    }
+};
+
+function mapStateToProps(state, ownProps) {
+    return {
+        exams: state.exams
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 
 

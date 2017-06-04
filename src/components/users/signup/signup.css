@@ -1,0 +1,29 @@
+.vertical-center{
+    min-height: 75vh; /* These two lines are counted as one :-)       */
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.auto-box {
+    margin: auto;
+    width: 40%;
+}
+
+.divider {
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.beautify-text {
+    border-radius: 10px;
+    height: 46px;
+}
+
+.push-up {
+    margin-top: 30px;
+}
