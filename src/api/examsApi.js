@@ -10,7 +10,7 @@ class ExamsApi {
             const exam = database.ref('ScheduledExam/Practice');
 
             exam.once('value', (snapshot)=> {
-                resolve(Object.assign({},snapshot.val()));
+                resolve(snapshot.val());
             })
         })
     };

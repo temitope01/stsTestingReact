@@ -43,7 +43,6 @@ class Dashboard extends React.Component {
             }).catch(err => {
 
             });
-
         }
 
         if(location.pathname.indexOf('Ongoing') !== -1) {
@@ -75,7 +74,7 @@ function mapDispatchToProps (dispatch)  {
     return {
         actions: bindActionCreators(examActions, dispatch)
     }
-};
+}
 
 function mapStateToProps(state, ownProps) {
     return {

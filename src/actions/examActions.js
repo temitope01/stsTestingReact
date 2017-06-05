@@ -13,6 +13,10 @@ export function endExamSuccess(exam) {
     return {type: Types.END_EXAM, exam};
 }
 
+export function currentExamSuccess(exam) {
+    return {type: Types.CURRENT_EXAM, exam};
+}
+
 export function getExams() {
     return dispatch => {
         return ExamsApi.getExams().then(exams=> {
@@ -26,9 +30,15 @@ export function getExams() {
 export function startExam(exam) {
     return dispatch => {
         return ExamsApi.startExam(exam).then( examDetail => {
-            dispatch(startExamSuccess(examDetail))
+            dispatch(startExamSuccess(examDetail));
         }).catch(err => {
             throw(err);
         })
+    }
+}
+
+export function currentExam(exam) {
+    return dispatch => {
+        dispatch(currentExamSuccess(exam));
     }
 }

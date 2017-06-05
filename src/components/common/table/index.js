@@ -14,6 +14,7 @@ const Table =({head, body, click})=> {
             </tr>
             </thead>
             <tbody>
+
             {body.map((item, number)=> {
 
                 return <tr onClick={()=> click(item.data[1])}  key={`${number}keys`}>

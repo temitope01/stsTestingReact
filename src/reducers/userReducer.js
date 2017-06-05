@@ -2,7 +2,7 @@ import * as types from '../actions/actionTypes';
 
 const initialState = {
     user: {}
-};
+}
 
 export default function userReducer(state = initialState.user, action) {
     switch (action.type) {

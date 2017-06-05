@@ -4,15 +4,19 @@ import { FormControl, Modal, ModalBody, Button } from 'react-bootstrap';
 import Table from '../../common/table';
 import _ from 'lodash';
 import Links from '../../common/link';
+import {bindActionCreators} from 'redux';
+import * as examActions from '../../../actions/examActions';
+import {connect} from 'react-redux';
 let data = {};
 
 class Exams extends  React.Component {
 
     constructor(props) {
         super(props);
-        const head = [{title: 'SN'}, {title: 'Subject'}, {title: 'Date'}, {title: 'Candidates'}];
-        const scheduledExams = this.props.scheduledExams;
-        debugger;
+        const head = [{title: 'SN'}, {title: 'Subject'},
+            {title: 'Start Time'}, {title: 'Candidates'},
+            {title: 'Duration'}];
+        const scheduledExams = this.formatData(this.props.scheduledExams);
         data = scheduledExams;
         this.state = {
             value: '',
@@ -22,6 +26,22 @@ class Exams extends  React.Component {
             match: this.props.match
         }
     }
+
+    formatData = (data) => {
+        let tableRow = [];
+
+        data.forEach((item, index)=> {
+            let itemArray = [];
+            itemArray.push(++index);
+            itemArray.push(item['examName']);
+            itemArray.push(item['scheduleDateTime']);
+            itemArray.push(item['time']);
+            itemArray.push(item['registeredCandidates']);
+            tableRow.push({'data': itemArray});
+        });
+
+        return tableRow;
+    };
 
     tableClick = (e)=> {
         this.showModal();
@@ -100,4 +120,12 @@ class Exams extends  React.Component {
     }
 }
 
-export default Exams;
+function mapDispatchToProps(dispatch) {
+    return{
+        actions: bindActionCreators(examActions, dispatch)
+    }
+
+}
+
+
+export default connect(null, mapDispatchToProps)(Exams);
