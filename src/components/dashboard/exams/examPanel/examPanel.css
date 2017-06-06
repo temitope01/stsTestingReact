@@ -22,3 +22,12 @@
 .center {
     text-align: center;
 }
+
+.options {
+    width: 100%;
+}
+
+.options:hover {
+    border: 1px solid lightblue;
+    background-color: lightblue;
+}

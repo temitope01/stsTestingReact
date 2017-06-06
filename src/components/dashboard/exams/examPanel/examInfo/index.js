@@ -1,12 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const ExamInfo =()=> {
+const ExamInfo =({name, present, total})=> {
     return(
      <div>
-         <div>Exam Name</div>
-         <div>1 out of 6</div>
+         <div>{name}</div>
+         <div><span>{present} </span> out of <span>{total}</span></div>
      </div>
     )
 };
+ExamInfo.PropTypes = {
+    name: PropTypes.string.isRequired,
+    present: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired
+}
 
 export default ExamInfo;

@@ -5,6 +5,7 @@ import Timer from './timer';
 import Progress from './progressBar';
 import Pagination from './pagination';
 import {Pager} from 'react-bootstrap';
+import ExamDisplay from './examDisplay';
 import _ from 'lodash';
 
 class ExamPanel extends React.Component {
@@ -14,18 +15,22 @@ class ExamPanel extends React.Component {
 
         const time = this.props.duration;
         const examInformation = this.props.examInformation;
+        debugger;
         const examQuestion = this.shuffleQuestion(examInformation.question,
             examInformation.amountOfQuestions);
         this.state ={
+            examName: examInformation.examName,
             time,
-            questions: examQuestion
+            questions: examQuestion,
+            count:0
         };
     }
 
     shuffleQuestion =(questions, amount) => {
         questions = JSON.parse(questions);
-       let questionCollections =  Object.keys(questions); // Get keys in Exam Object
-       questionCollections.splice(questionCollections.length - 3, 3); // Splice the last 3 elements because they are feedback, failure, success
+
+        let questionCollections =  Object.keys(questions); // Get keys in Exam Object
+        questionCollections.splice(questionCollections.length - 3, 3); // Splice the last 3 elements because they are feedback, failure, success
         let shuffledKeys = _.shuffle(questionCollections);
         let questionsShuffled =shuffledKeys.filter((data, index)=> {
             return (index < amount);
@@ -54,13 +59,17 @@ class ExamPanel extends React.Component {
         debugger;
     };
 
+    handleClick =(e) => {
+        debugger;
+    };
+
     render() {
         return(
             <div className="container-exam-panel">
                 <div className="container-padding-panel">
                     <div className="row">
                         <div className="col-md-3">
-                            <ExamInfo/>
+                            <ExamInfo name={this.state.examName} present="" total="" />
                         </div>
                         <div className="col-md-6">
                             <Timer time={this.state.time}/>
@@ -71,7 +80,7 @@ class ExamPanel extends React.Component {
 
                     </div>
                     <div className="table-container-panel">
-                        hello
+                        <ExamDisplay click={this.handleClick} questions={this.state.questions[this.state.count]} />
                     </div>
                     <div className="bottom-panel">
                         <div className="row">
