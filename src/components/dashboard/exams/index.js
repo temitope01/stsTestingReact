@@ -17,6 +17,7 @@ class Exams extends  React.Component {
             {title: 'Start Time'}, {title: 'Candidates'},
             {title: 'Duration'}];
         const scheduledExams = this.formatData(this.props.scheduledExams);
+
         data = scheduledExams;
         this.state = {
             value: '',
@@ -43,8 +44,11 @@ class Exams extends  React.Component {
         return tableRow;
     };
 
-    tableClick = (e)=> {
-        this.showModal();
+    tableClick = (exam)=> {
+        let that = this;
+        this.props.actions.currentExam(exam).then(()=> {
+            that.showModal();
+        });
     };
 
     showModal =(e)=> {
@@ -109,7 +113,7 @@ class Exams extends  React.Component {
                             </ModalBody>
                             <Modal.Footer>
                                 <Button onClick={this.close}>Cancel</Button>
-                                <Links style="left btn btn-default " name="Proceed" target={`${this.state.match.path}/current#`}/>
+                                <Links onClick={this.close} style="left btn btn-default " name="Proceed" target={`${this.state.match.path}/current#`}/>
                             </Modal.Footer>
                         </Modal>
                     </div>
@@ -124,7 +128,6 @@ function mapDispatchToProps(dispatch) {
     return{
         actions: bindActionCreators(examActions, dispatch)
     }
-
 }
 
 

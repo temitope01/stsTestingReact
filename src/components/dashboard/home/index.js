@@ -50,10 +50,26 @@ class Dashboard extends React.Component {
         }
 
         if(location.pathname.indexOf('current') !== -1) {
-            this.setState({component: <ExamPanel/>});
+            const currentExam = that.props.currentExam;
+
+            this.props.actions.startExam(currentExam).then(()=> {
+                const presentExamDetail = that.getCurrentDetails(currentExam);
+                const presentExam = that.props.currentExam;
+                that.setState({component:
+                    <ExamPanel examInformation={presentExam} duration={presentExamDetail[0].duration} />});
+            }).catch(err => {
+
+            });
         }
 
     };
+
+    getCurrentDetails = (examName) => {
+        return this.props.exams.filter((data)=> {
+            return data.examName = examName;
+        });
+    };
+
 
     render () {
         return(
@@ -78,7 +94,8 @@ function mapDispatchToProps (dispatch)  {
 
 function mapStateToProps(state, ownProps) {
     return {
-        exams: state.exams
+        exams: state.exams.exams,
+        currentExam: state.exams.currentExam
     }
 }
 

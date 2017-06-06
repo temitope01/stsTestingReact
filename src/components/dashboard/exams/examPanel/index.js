@@ -5,17 +5,52 @@ import Timer from './timer';
 import Progress from './progressBar';
 import Pagination from './pagination';
 import {Pager} from 'react-bootstrap';
+import _ from 'lodash';
 
 class ExamPanel extends React.Component {
 
     constructor(props) {
         super(props);
 
-        const questions = [{'question': 'hello world', 'option': 'Yes'}]
+        const time = this.props.duration;
+        const examInformation = this.props.examInformation;
+        const examQuestion = this.shuffleQuestion(examInformation.question,
+            examInformation.amountOfQuestions);
+        this.state ={
+            time,
+            questions: examQuestion
+        };
     }
 
+    shuffleQuestion =(questions, amount) => {
+        questions = JSON.parse(questions);
+       let questionCollections =  Object.keys(questions); // Get keys in Exam Object
+       questionCollections.splice(questionCollections.length - 3, 3); // Splice the last 3 elements because they are feedback, failure, success
+        let shuffledKeys = _.shuffle(questionCollections);
+        let questionsShuffled =shuffledKeys.filter((data, index)=> {
+            return (index < amount);
+        });
 
-    handlePagination = (e, test)=> {
+        return questionsShuffled.map(key => {
+            let shuffledOptions = _.shuffle(Object.keys(questions[key])); // Shuffle the options in the questions
+
+            let shuffled = shuffledOptions.filter(data => {
+                return /(option)/.test(data) || /(answer)/.test(data)
+            }); // Retrieve all options and answers from shuffled date
+
+            let shuffledOptionAnswer = shuffled.map((dataItem)=> {
+               return  questions[key][dataItem]; // We join the shiffled options from the questions
+            });
+
+            return {
+                'question': key,
+                'options': shuffledOptionAnswer
+            };
+
+        })
+    };
+
+    handlePagination = (e, element)=> {
         debugger;
     };
 
@@ -28,7 +63,7 @@ class ExamPanel extends React.Component {
                             <ExamInfo/>
                         </div>
                         <div className="col-md-6">
-                            <Timer/>
+                            <Timer time={this.state.time}/>
                         </div>
                         <div className="col-md-3">
                             <Progress percentage={20} color="danger"/>
