@@ -17,7 +17,8 @@ class ExamsApi {
 
     startExam = (exams) => {
         return new Promise((resolve, reject)=> {
-            const exam = database.ref(`ExamQuestion/${exams}`);
+
+            const exam = database.ref(`ExamQuestion/${exams.trim()}`);
 
             exam.once('value', (snapshot)=> {
                 resolve(Object.assign({}, snapshot.val()));

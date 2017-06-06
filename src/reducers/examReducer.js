@@ -1,20 +1,21 @@
 import * as Types from '../actions/actionTypes';
 
 const initialState = {
-    exams: []
+    exams: [],
+    currentExam: {}
 };
 
-export default function examReducer(state = initialState.exams, action) {
+export default function examReducer(state = initialState, action) {
 
     switch (action.type) {
         case Types.GET_EXAMS:
-            return [...state, action.exams];
+            return {...state, exams: [action.exams]};
 
         case Types.START_EXAM:
-            return Object.assign(state.exam, action.exam);
+            return {...state, currentExam: action.exam}
 
         case Types.CURRENT_EXAM:
-            return Object.assign()
+            return {...state, currentExam: action.exam};
 
         default:
             return state;

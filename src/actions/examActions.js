@@ -39,6 +39,8 @@ export function startExam(exam) {
 
 export function currentExam(exam) {
     return dispatch => {
-        dispatch(currentExamSuccess(exam));
+        return new Promise((resolve, reject) => {
+            resolve(dispatch(currentExamSuccess(exam)));
+        })
     }
 }
