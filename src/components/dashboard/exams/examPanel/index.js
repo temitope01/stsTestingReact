@@ -7,6 +7,7 @@ import Pagination from './pagination';
 import {Pager} from 'react-bootstrap';
 import ExamDisplay from './examDisplay';
 import _ from 'lodash';
+let examAnswers = [];
 
 class ExamPanel extends React.Component {
 
@@ -17,14 +18,101 @@ class ExamPanel extends React.Component {
         const examInformation = this.props.examInformation;
         const examQuestion = this.shuffleQuestion(examInformation.question,
             examInformation.amountOfQuestions);
+        examAnswers = [...examQuestion];
+
         this.state ={
             examName: examInformation.examName,
             time,
             questions: examQuestion,
             count:0,
-            total:  examInformation.amountOfQuestions
+            total:  examInformation.amountOfQuestions,
+            examAnswers,
+            percent: 0,
+            color: 'danger',
+            minute: 0,
+            hour: 0,
+            seconds: 0,
+            submit: false
         };
+
+        this.handleClick = this.handleClick.bind(this);
     }
+
+    setTime = (time) => {
+        let minute = 0;
+        let hour = 0;
+
+        let timer = new Number(time);
+        if (timer > 60) {
+            minute = 325 % 60;
+
+            hour = 325 / 60;
+
+        } else {
+            minute = time;
+            hour = 0;
+        }
+
+        this.setState({minute});
+        this.setState({hour});
+        this.setState({seconds: 59});
+    };
+
+
+    componentDidMount = () => {
+        this.setTime(this.state.time);
+        this.countdown = setInterval(this.timer, 1000);
+    };
+
+    componentWillUnMount = () => {
+        clearInterval(this.countdown);
+    };
+
+    timer = () => {
+        let minute = this.state.minute;
+        let hour = this.state.hour;
+        let seconds = this.state.seconds;
+
+        if((seconds == 0) || (seconds == 59)) {
+            if (minute == 0 && hour == 0) {
+                // end exam
+                clearInterval(this.countdown);
+            }
+            else{
+                this.substractMinute(minute, hour, seconds);
+            }
+
+        } else{
+            this.substractMinute(minute, hour, seconds);
+        }
+    };
+
+    substractMinute = (minute, hour, seconds) => {
+        if(seconds == 0) {
+            seconds = 59;
+        } else{
+            seconds = (seconds - 1);
+        }
+
+        if(minute == 0){
+            // If minute is 0, we want to subtract hour
+            if(hour > 0){
+                hour = (hour - 1);
+            }
+            minute = 59;
+        }
+        else {
+            if(seconds == 59) {
+                minute = (minute - 1);
+                (minute < 10) ? minute = `0${minute}` : '';
+            }
+        }
+
+        // If minute less than 10, we want to output with leading zeros
+
+        (seconds < 10) ? seconds = `0${seconds}`: '';
+        this.setState({minute, hour, seconds});
+    };
 
     shuffleQuestion =(questions, amount) => {
         questions = JSON.parse(questions);
@@ -56,7 +144,7 @@ class ExamPanel extends React.Component {
     };
 
     handlePagination = (e, element)=> {
-        this.setState({count: (e - 1)})
+        this.setState({count: (e - 1)});
     };
 
     handlePrevious = ()=> {
@@ -69,10 +157,57 @@ class ExamPanel extends React.Component {
         let presentCount = this.state.count;
         presentCount = presentCount + 1;
         this.setState({count: presentCount});
+        if(presentCount == (this.state.examAnswers.length - 1)) {
+            this.setState({submit: true});
+        }
     };
 
+    submitQuestion = () => {
+
+    };
+
+    markQuestions = () => {
+
+    };
+
+    displayReport = () => {
+
+    }
+
     handleClick =(e) => {
-        debugger;
+        examAnswers[(this.state.count)].answer = e.target.id;
+        this.setState({examAnswers: examAnswers});
+        let progressCounter = this.state.examAnswers.filter(data => {
+            return data.answer;
+        });
+
+        const percentage = ((progressCounter.length * 100) / examAnswers.length);
+        this.updateProgressPercentage(percentage);
+    };
+
+    updateProgressPercentage =(percent) => {
+        this.setState({percent});
+        this.updateProgressColor(percent);
+    };
+
+    updateProgressColor = (percent) => {
+
+        if(percent > 30) {
+            this.setState({color: 'warning'})
+        }
+
+        if(percent > 40) {
+            this.setState({color: 'info'})
+        }
+
+        if(percent > 50) {
+            this.setState({color: ''})
+        }
+
+        if(percent > 70) {
+            this.setState({color: 'success'})
+        }
+
     };
 
     render() {
@@ -84,15 +219,15 @@ class ExamPanel extends React.Component {
                             <ExamInfo name={this.state.examName} present={this.state.count} total={this.state.total} />
                         </div>
                         <div className="col-md-6">
-                            <Timer time={this.state.time}/>
+                            <Timer hour={this.state.hour} minute={this.state.minute} seconds={this.state.seconds} time={this.state.time}/>
                         </div>
                         <div className="col-md-3">
-                            <Progress percentage={20} color="danger"/>
+                            <Progress percentage={this.state.percent} color={this.state.color}/>
                         </div>
 
                     </div>
                     <div className="table-container-panel">
-                        <ExamDisplay click={this.handleClick} questions={this.state.questions[this.state.count]} />
+                        <ExamDisplay click={this.handleClick} submit={this.state.submit} answers={this.state.examAnswers[this.state.count]} questions={this.state.questions[this.state.count]} />
                     </div>
                     <div className="bottom-panel">
                         <div className="row">
@@ -102,7 +237,7 @@ class ExamPanel extends React.Component {
                                 </Pager>
                             </div>
                             <div className="col-md-8 center">
-                                <Pagination active={(this.state.count + 1)} select={this.handlePagination} items={parseInt(this.state.total)} size="small" />
+                                <Pagination active={(this.state.count + 1)}  maxButtons={20} select={this.handlePagination} items={parseInt(this.state.total)} size="small" />
                             </div>
                             <div className="col-md-2">
                                 <Pager >
