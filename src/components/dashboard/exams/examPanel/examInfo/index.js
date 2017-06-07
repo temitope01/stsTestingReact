@@ -5,7 +5,7 @@ const ExamInfo =({name, present, total})=> {
     return(
      <div>
          <div>{name}</div>
-         <div><span>{present} </span> out of <span>{total}</span></div>
+         <div><span>{++present} </span> out of <span>{total}</span> <span>Questions</span></div>
      </div>
     )
 };

@@ -15,14 +15,14 @@ class ExamPanel extends React.Component {
 
         const time = this.props.duration;
         const examInformation = this.props.examInformation;
-        debugger;
         const examQuestion = this.shuffleQuestion(examInformation.question,
             examInformation.amountOfQuestions);
         this.state ={
             examName: examInformation.examName,
             time,
             questions: examQuestion,
-            count:0
+            count:0,
+            total:  examInformation.amountOfQuestions
         };
     }
 
@@ -56,7 +56,19 @@ class ExamPanel extends React.Component {
     };
 
     handlePagination = (e, element)=> {
-        debugger;
+        this.setState({count: (e - 1)})
+    };
+
+    handlePrevious = ()=> {
+        let presentCount = this.state.count;
+        presentCount = presentCount -1;
+        this.setState({count: presentCount});
+    };
+
+    handleNext =() => {
+        let presentCount = this.state.count;
+        presentCount = presentCount + 1;
+        this.setState({count: presentCount});
     };
 
     handleClick =(e) => {
@@ -69,7 +81,7 @@ class ExamPanel extends React.Component {
                 <div className="container-padding-panel">
                     <div className="row">
                         <div className="col-md-3">
-                            <ExamInfo name={this.state.examName} present="" total="" />
+                            <ExamInfo name={this.state.examName} present={this.state.count} total={this.state.total} />
                         </div>
                         <div className="col-md-6">
                             <Timer time={this.state.time}/>
@@ -86,15 +98,15 @@ class ExamPanel extends React.Component {
                         <div className="row">
                             <div className="col-md-2">
                                 <Pager>
-                                    <Pager.Item previous href="#">&larr; Previous</Pager.Item>
+                                    <Pager.Item onClick={this.handlePrevious} disabled={(this.state.count <= 0)} previous href="#">&larr; Previous</Pager.Item>
                                 </Pager>
                             </div>
                             <div className="col-md-8 center">
-                                <Pagination active={1} select={this.handlePagination} items={10} size="small" />
+                                <Pagination active={(this.state.count + 1)} select={this.handlePagination} items={parseInt(this.state.total)} size="small" />
                             </div>
                             <div className="col-md-2">
-                                <Pager>
-                                    <Pager.Item next href="#">&larr; Next</Pager.Item>
+                                <Pager >
+                                    <Pager.Item onClick={this.handleNext} disabled={(this.state.count >= (this.state.total - 1))} next href="#">&rarr; Next</Pager.Item>
                                 </Pager>
                             </div>
                         </div>
