@@ -1,4 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
+Skip to content
+        This repository
+        Search
+        Pull requests
+        Issues
+        Marketplace
+        Gist
+        @andela-jadewale
+        Sign out
+        Unwatch 1
+        Star 0
+        Fork 0 andela-jadewale/stsTestingReact
+        Code  Issues 0  Pull requests 0  Projects 0  Wiki  Settings Insights
+        Branch: develop Find file Copy pathstsTestingReact/.idea/workspace.xml
+        d49726e  5 hours ago
+        Jolaade Adewale add progress bar, selected answer, and timer
+        0 contributors
+        RawBlameHistory
+        1154 lines (1154 sloc)  60.7 KB
+        <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4d1913e-35be-44d4-a989-b96d8b50707a" name="Default" comment="">
@@ -1152,3 +1171,5 @@
     </entry>
   </component>
 </project>
+        Contact GitHub API Training Shop Blog About
+        © 2017 GitHub, Inc. Terms Privacy Security Status Help
