@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ExamDisplay =({questions, click, answers, submit} )=> {
+const ExamDisplay =({questions, click, answers, submit, submitClick} )=> {
 
     return (
         <div>
-            <button className={submit ? 'show': 'hide'}>Submit</button>
+            <button onClick={submitClick} className={submit ? 'show': 'hide'}>Submit</button>
         <table>
           <tbody>
             <tr>
@@ -23,7 +23,9 @@ const ExamDisplay =({questions, click, answers, submit} )=> {
 ExamDisplay.PropTypes = {
     questions: PropTypes.object.isRequired,
     click: PropTypes.func.isRequired,
-    answers: PropTypes.object
+    answers: PropTypes.object,
+    submit: PropTypes.boolean,
+    submitClick: PropTypes.func.isRequired
 };
 
 
