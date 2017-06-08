@@ -163,16 +163,30 @@ class ExamPanel extends React.Component {
     };
 
     submitQuestion = () => {
-
+        // Clear up timers and other things
+        // Clear up timers and other things
+        this.markQuestions();
     };
 
     markQuestions = () => {
+        const originalQuestions = this.props.examInformation.question; // We want to get the original Questions from the DB
+        this.state.questions.forEach((data, index) => {
+            let presentQuestion = JSON.parse(originalQuestions); // Parse original Question via JSON
+            let answers = Object.keys(presentQuestion[data.question]); // Get the keys of all options/ answers
+            answers = answers.filter(ans => { // filter answers returning only match of answer
+                return /(answer)/.test(ans)
+            });
 
+            const correctAnswer = presentQuestion[data.question][answers]; // get answer value from questions object
+            debugger;
+            let options = Object.keys(data.options);
+            debugger;
+        })
     };
 
     displayReport = () => {
 
-    }
+    };
 
     handleClick =(e) => {
         examAnswers[(this.state.count)].answer = e.target.id;
@@ -227,7 +241,7 @@ class ExamPanel extends React.Component {
 
                     </div>
                     <div className="table-container-panel">
-                        <ExamDisplay click={this.handleClick} submit={this.state.submit} answers={this.state.examAnswers[this.state.count]} questions={this.state.questions[this.state.count]} />
+                        <ExamDisplay click={this.handleClick} submitClick={this.submitQuestion} submit={this.state.submit} answers={this.state.examAnswers[this.state.count]} questions={this.state.questions[this.state.count]} />
                     </div>
                     <div className="bottom-panel">
                         <div className="row">
